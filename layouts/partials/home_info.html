@@ -7,6 +7,19 @@
         {{ .Content | markdownify }}
     </div>
     <a class="u-url u-uid p-name" href="{{ "" | absLangURL }}" hidden>{{ site.Params.author }}</a>
+    {{- $author := site.GetPage (printf "/authors/%s" (site.Params.author | urlize)) }}
+    {{- if $author }}
+        {{- $photo := $author.Resources.GetMatch $author.Params.photo }}
+        {{- $photoUrl := "" }}
+        {{- if $photo }}
+            {{- $photoUrl = $photo.Permalink }}
+        {{- else if $author.Params.photo }}
+            {{- $photoUrl = $author.Params.photo | absURL }}
+        {{- end }}
+        {{- if $photoUrl }}
+            <img src="{{ $photoUrl }}" alt="{{ site.Params.author }}" class="u-photo" style="display:none" hidden>
+        {{- end }}
+    {{- end }}
     <footer class="entry-footer">
         {{ partial "social_icons.html" (dict "align" site.Params.homeInfoParams.AlignSocialIconsTo) }}
     </footer>
