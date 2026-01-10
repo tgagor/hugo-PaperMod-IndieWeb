@@ -60,6 +60,10 @@
   {{- if (.Param "comments") }}
   {{- partial "comments.html" . }}
   {{- end }}
+  {{- $syndicationTypes := site.Params.BridGySyndicationTypes | default (slice "posts") }}
+  {{- if and site.Params.ShowBridGySyndicationLink (in $syndicationTypes .Type) }}
+  <a href="https://fed.brid.gy/" class="u-syndication" hidden></a>
+  {{- end }}
   <a class="u-url" href="{{ if .Params.canonicalURL -}} {{ trim .Params.canonicalURL " " }} {{- else -}} {{ .Permalink }} {{- end }}" hidden></a>
 </article>
 
