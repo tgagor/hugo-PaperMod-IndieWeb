@@ -19,11 +19,13 @@
                             {{- $img = $img.Resize "x30" }}
                         {{- end }}
                     {{- end }}
-                    <img src="{{ $img.Permalink }}" alt="" aria-label="logo"
-                        height="{{- site.Params.label.iconHeight | default "30" -}}">
+                    <img src="{{ $img.Permalink }}" alt="Page logo" aria-label="logo"
+                        height="{{- site.Params.label.iconHeight | default "30" -}}"
+                        width="{{- site.Params.label.iconWidth | default "30" -}}">
                 {{- else }}
-                <img src="{{- site.Params.label.icon | absURL -}}" alt="" aria-label="logo"
-                    height="{{- site.Params.label.iconHeight | default "30" -}}">
+                <img src="{{- site.Params.label.icon | absURL -}}" alt="Page logo" aria-label="logo"
+                    height="{{- site.Params.label.iconHeight | default "30" -}}"
+                    width="{{- site.Params.label.iconWidth | default "30" -}}">
                 {{- end -}}
                 {{- else if hasPrefix site.Params.label.iconSVG "<svg" }}
                     {{ site.Params.label.iconSVG | safeHTML }}
@@ -54,7 +56,7 @@
                     </svg>
                 </button>
                 {{- end }}
-                
+
                 {{- if (not site.Params.disableLangToggle) }}
                     {{- $lang := .Lang}}
                     {{- $separator := or $label_text (not site.Params.disableThemeToggle)}}
