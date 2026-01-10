@@ -14,7 +14,23 @@
 
 {{- if not (.Param "hideAuthor") -}}
 {{- with (partial "author.html" .) }}
-{{- $scratch.Add "meta" (slice (printf "<span class='p-author h-card'>%s</span>" .)) }}
+{{- $authorName := . }}
+{{- $authorPhoto := "" }}
+{{- $authorPage := site.GetPage (printf "/authors/%s" ($authorName | urlize)) }}
+{{- if $authorPage }}
+{{- $photo := $authorPage.Resources.GetMatch $authorPage.Params.photo }}
+{{- if $photo }}
+{{- $authorPhoto = $photo.Permalink }}
+{{- else if $authorPage.Params.photo }}
+{{- $authorPhoto = $authorPage.Params.photo | absURL }}
+{{- end }}
+{{- end }}
+
+{{- if $authorPhoto }}
+{{- $scratch.Add "meta" (slice (printf "<span class='p-author h-card'>%s<img class='u-photo' src='%s' alt='%s' style='display:none' hidden></span>" $authorName $authorPhoto $authorName)) }}
+{{- else }}
+{{- $scratch.Add "meta" (slice (printf "<span class='p-author h-card'>%s</span>" $authorName)) }}
+{{- end }}
 {{- end }}
 {{- end }}
 
