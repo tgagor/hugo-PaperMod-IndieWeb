@@ -34,7 +34,7 @@
 
     const renderMentions = (mentions) => {
         if (mentions.length === 0) {
-            container.innerHTML = "<p>No interactions yet. Be the first!</p>";
+            container.innerHTML = "<p></p>"; // No interactions yet. Be the first!
             return;
         }
 
