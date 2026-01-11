@@ -1,5 +1,5 @@
 {{- if site.Params.ShowWebmentions }}
-{{- $targets := slice (replace .Permalink "http://localhost:1313" "https://gagor.pro") }}
+{{- $targets := slice .Permalink }}
 {{- range .Aliases }}
 {{- $targets = $targets | append (. | absURL) }}
 {{- end }}
