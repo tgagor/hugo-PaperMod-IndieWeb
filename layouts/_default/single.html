@@ -60,14 +60,13 @@
   {{- if (.Param "comments") }}
   {{- partial "comments.html" . }}
   {{- end }}
+
   {{- partial "webmentions.html" . }}
-  {{- $syndicationTypes := site.Params.BridGySyndicationTypes | default (slice "posts") }}
-  {{- if and site.Params.ShowBridGySyndicationLink (in $syndicationTypes .Type) }}
-  <a href="https://fed.brid.gy/" class="u-syndication" hidden></a>
-  {{- end }}
-  {{- if and site.Params.ShowNewsIndiewebOrgSyndicationLink (in $syndicationTypes .Type) }}
-    {{- with or .Params.locale site.Language.LanguageCode site.Language.Lang }}
-    <a href="https://news.indieweb.org/{{ . }}" class="u-syndication" hidden></a>
+
+  {{- $syndicationTypes := site.Params.SyndicationTypes | default (slice "posts") }}
+  {{- if and site.Params.SyndicationLinks (in $syndicationTypes .Type) }}
+    {{- range site.Params.SyndicationLinks }}
+      <a href="{{ . }}" class="u-syndication" hidden></a>
     {{- end }}
   {{- end }}
   <a class="u-url" href="{{ if .Params.canonicalURL -}} {{ trim .Params.canonicalURL " " }} {{- else -}} {{ .Permalink }} {{- end }}" hidden></a>
