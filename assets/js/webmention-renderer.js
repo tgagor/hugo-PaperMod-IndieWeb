@@ -7,16 +7,16 @@
     const container = document.getElementById("webmentions-container");
     if (!container) return; // Should not happen if script is loaded correctly
 
-    const targetUrl = container.getAttribute("data-target");
-    if (!targetUrl) return;
+    const targets = container.getAttribute("data-targets").split(",");
+    if (!targets.length) return;
 
     const endpoint = "https://webmention.io/api/mentions.jf2";
     const params = new URLSearchParams({
-        target: targetUrl,
         "sort-by": "published",
         "sort-dir": "up", // Oldest first (like comments)
         per_page: "100"
     });
+    targets.forEach(t => params.append("target[]", t));
 
     const fetchMentions = async () => {
         try {

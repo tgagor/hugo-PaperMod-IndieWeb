@@ -1,5 +1,13 @@
 {{- if site.Params.ShowWebmentions }}
-<div id="webmentions-container" data-target="{{ .Permalink }}"></div>
+{{- $targets := slice .Permalink }}
+{{- range .Aliases }}
+{{- $targets = $targets | append (. | absURL) }}
+{{- end }}
+{{- with .Params.canonicalURL }}
+{{- $targets = $targets | append (trim . " " | absURL) }}
+{{- end }}
+{{- $targets = $targets | uniq }}
+<div id="webmentions-container" data-targets="{{ delimit $targets " ," }}"></div>
 {{- $webmentionJs := resources.Get "js/webmention-renderer.js" | resources.Minify | resources.Fingerprint }}
 <script src="{{ $webmentionJs.RelPermalink }}" defer></script>
 {{- end }}
