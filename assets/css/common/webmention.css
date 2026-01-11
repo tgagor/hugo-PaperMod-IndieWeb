@@ -1,0 +1,45 @@
+/* Basic styling for webmentions - can be moved to CSS file later */
+.webmentions-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+.webmention-item {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.webmention-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9em;
+    color: var(--secondary);
+    flex-wrap: wrap;
+}
+
+.webmention-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.webmention-author a {
+    font-weight: bold;
+    color: var(--primary);
+}
+
+.webmention-content {
+    margin-top: 8px;
+    font-size: 0.95em;
+    color: var(--content);
+    background: var(--code-block-bg);
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.webmention-content p {
+    margin: 5px 0;
+}
