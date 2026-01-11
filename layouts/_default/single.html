@@ -65,6 +65,11 @@
   {{- if and site.Params.ShowBridGySyndicationLink (in $syndicationTypes .Type) }}
   <a href="https://fed.brid.gy/" class="u-syndication" hidden></a>
   {{- end }}
+  {{- if and site.Params.ShowNewsIndiewebOrgSyndicationLink (in $syndicationTypes .Type) }}
+    {{- with or .Params.locale site.Language.LanguageCode site.Language.Lang }}
+    <a href="https://news.indieweb.org/{{ . }}" class="u-syndication" hidden></a>
+    {{- end }}
+  {{- end }}
   <a class="u-url" href="{{ if .Params.canonicalURL -}} {{ trim .Params.canonicalURL " " }} {{- else -}} {{ .Permalink }} {{- end }}" hidden></a>
 </article>
 
