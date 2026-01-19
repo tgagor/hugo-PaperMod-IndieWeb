@@ -19,7 +19,9 @@
       {{ .Description }}
     </div>
     {{- else }}
-    <div class="p-summary" style="display:none" hidden>{{ .Summary }}</div>
+      {{- if .Summary }}
+        <div class="p-summary" style="display:none" hidden>{{ .Summary }}</div>
+      {{- end }}
     {{- end }}
     {{- if not (.Param "hideMeta") }}
     <div class="post-meta">
