@@ -15,14 +15,44 @@
       {{- end }}
     </h1>
     {{- if .Description }}
-    <div class="post-description p-summary">
+    <div class="post-description">
       {{ .Description }}
     </div>
-    {{- else }}
-      {{- if .Summary }}
-        <div class="p-summary" style="display:none" hidden>{{ .Summary }}</div>
-      {{- end }}
     {{- end }}
+    {{- /* IndieWeb p-summary */ -}}
+    {{- $typeConfig := "" -}}
+    {{- if site.Params.Syndication -}}
+      {{- $typeConfig = index site.Params.Syndication.types .Type -}}
+    {{- end -}}
+    <div class="p-summary" style="display:none">
+      {{- $message := "" -}}
+      {{- if $typeConfig -}}
+        {{- $message = $typeConfig.message -}}
+      {{- end -}}
+      {{- if not $message -}}
+        {{- $message = .Description | default .Summary | default .Title -}}
+      {{- end -}}
+      {{- $message -}}
+
+      {{- /* Hashtags */ -}}
+      {{- $hashtags := slice -}}
+      {{- if $typeConfig -}}
+        {{- range $typeConfig.extra_tags -}}
+          {{- $hashtags = $hashtags | append (printf "#%s" .) -}}
+        {{- end -}}
+      {{- end -}}
+      {{- $tagsParam := .Language.Params.Taxonomies.tag | default "tags" -}}
+      {{- range ($.GetTerms $tagsParam) -}}
+        {{- /* Clean tag name for hashtag: strip non-alphanumeric, keep it simple */ -}}
+        {{- $tag := .LinkTitle | replaceRE "[^a-zA-Z0-9]" "" -}}
+        {{- $hashtags = $hashtags | append (printf "#%s" $tag) -}}
+      {{- end -}}
+
+      {{- if $hashtags }}
+      {{ "\n\n" }}
+      {{ delimit $hashtags " " }}
+      {{ end -}}
+    </div>
     {{- if not (.Param "hideMeta") }}
     <div class="post-meta">
       {{- partial "post_meta.html" . -}}
@@ -49,7 +79,6 @@
   <footer class="post-footer">
     {{- $tags := .Language.Params.Taxonomies.tag | default "tags" }}
     <ul class="post-tags">
-      <li style="display:none"><span class="p-category">blog</span></li>
       {{- range ($.GetTerms $tags) }}
       <li><a href="{{ .Permalink }}" class="p-category">{{ .LinkTitle }}</a></li>
       {{- end }}
@@ -68,9 +97,8 @@
   {{- partial "comments.html" . }}
   {{- end }}
 
-  {{- $syndicationTypes := site.Params.SyndicationTypes | default (slice "posts") }}
-  {{- if and site.Params.SyndicationLinks (in $syndicationTypes .Type) }}
-    {{- range site.Params.SyndicationLinks }}
+  {{- if and site.Params.Syndication site.Params.Syndication.links $typeConfig }}
+    {{- range site.Params.Syndication.links }}
       <a href="{{ . }}" class="u-syndication" hidden></a>
     {{- end }}
   {{- end }}
