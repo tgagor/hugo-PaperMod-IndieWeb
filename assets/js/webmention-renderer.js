@@ -109,11 +109,13 @@
           avatarHtml = `<span class="webmention-avatar webmention-avatar--placeholder" aria-hidden="true">${initial}</span>`;
         }
 
-        const profileLinkStart = authorUrl
-          ? `<a href="${escapeHtml(authorUrl)}" class="webmention-like-link" target="_blank" rel="nofollow noopener" title="${authorName}">`
+        const interactionUrl = m.url || authorUrl;
+
+        const profileLinkStart = interactionUrl
+          ? `<a href="${escapeHtml(interactionUrl)}" class="webmention-like-link" target="_blank" rel="nofollow noopener" title="${authorName}">`
           : `<span class="webmention-like-link" title="${authorName}">`;
 
-        const profileLinkEnd = authorUrl ? `</a>` : `</span>`;
+        const profileLinkEnd = interactionUrl ? `</a>` : `</span>`;
 
         html += `
           <li class="webmention-like-item ${wmType}">
@@ -150,6 +152,8 @@
         if (wmType === "repost-of") verb = "reposted";
         if (wmType === "in-reply-to") verb = "replied";
 
+        const interactionUrl = m.url || authorUrl;
+
         // Choose an icon for the left column:
         // prefer author photo (48x48), otherwise a small emoji representing type
         let iconHtml = "";
@@ -165,6 +169,10 @@
           iconHtml = `<div class="webmention-icon-emoji" aria-hidden="true">${emoji}</div>`;
         }
 
+        if (interactionUrl) {
+          iconHtml = `<a href="${escapeHtml(interactionUrl)}" target="_blank" rel="nofollow noopener">${iconHtml}</a>`;
+        }
+
         // Build the list item with two-column layout
         // left: icon column (48px)
         // right: body column (meta row and content row)
@@ -176,17 +184,15 @@
               </div>
               <div class="webmention-body-column">
                 <div class="webmention-meta-top">
-                  <span class="webmention-author">${authorUrl ? `<a href="${escapeHtml(authorUrl)}" target="_blank" rel="nofollow noopener">${authorName}</a>` : authorName}</span>
+                  <span class="webmention-author">${interactionUrl ? `<a href="${escapeHtml(interactionUrl)}" target="_blank" rel="nofollow noopener">${authorName}</a>` : authorName}</span>
                   <span class="webmention-verb">${verb}</span>
                   <span class="webmention-date">${published}</span>
-                  <a href="${escapeHtml(m.url)}" target="_blank" rel="nofollow noopener" class="webmention-source-link" title="Original Source">🔗</a>
                 </div>
-                ${
-                  (wmType === "in-reply-to" || wmType === "mention-of") &&
-                  content
-                    ? `<div class="webmention-content">${sanitizeContent(content)}</div>`
-                    : ``
-                }
+                ${(wmType === "in-reply-to" || wmType === "mention-of") &&
+            content
+            ? `<div class="webmention-content">${sanitizeContent(content)}</div>`
+            : ``
+          }
               </div>
             </div>
           </li>
