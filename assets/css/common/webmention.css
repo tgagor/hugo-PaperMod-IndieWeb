@@ -1,70 +1,140 @@
-/* Webmention styles for PaperMod
- *
- * - Adds styles for Likes (compact avatar list) and headings
- * - Keeps existing styles for detailed mentions/replies
- * - Adds accessibility helper classes (sr-only)
- */
+/* Optimized Webmention styles for PaperMod */
 
-/* Core list styling */
-.webmentions-list {
+/* Layout & List nesting */
+.webmentions-list,
+.webmention-likes-list {
     list-style: none;
     padding: 0;
-    margin-top: 20px;
+    margin: 0;
 }
 
-/* Individual item (detailed mentions/replies) */
+.webmentions-likes,
+.webmentions-mentions {
+    margin: 18px 0;
+}
+
 .webmention-item {
     padding: 10px 0;
     border-bottom: 1px solid var(--border);
 }
 
-.webmention-meta {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.9em;
-    color: var(--secondary);
-    flex-wrap: wrap;
-}
-
-.webmention-author a {
-    font-weight: bold;
+/* Headings */
+.webmentions-heading {
+    margin: 14px 0 8px;
+    font-size: 1.05rem;
+    font-weight: 600;
     color: var(--primary);
 }
 
-/* Avatar used in both compact likes and full mentions */
-/* NOTE: transform-origin centered so scaling appears uniform from the center */
-.webmention-avatar {
-    width: 32px;
-    height: 32px;
+/* Avatar Core (unified for likes and mentions) */
+.webmention-avatar,
+.webmention-avatar--placeholder,
+.webmention-icon-img,
+.webmention-icon-emoji {
     border-radius: 6px;
     object-fit: cover;
-
-    /* Faster, centered scaling */
-    transition: transform 0.08s ease;
-    will-change: transform;
-    transform-origin: center center;
-}
-
-/* General avatar hover (kept subtle for detailed mentions) */
-.webmention-avatar:hover,
-.webmention-like-link:focus .webmention-avatar {
-    transform: scale(1.06);
-}
-
-/* Placeholder avatar (initials) */
-.webmention-avatar--placeholder,
-.webmention-like-initials {
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.webmention-avatar,
+.webmention-avatar--placeholder {
+    width: 32px;
+    height: 32px;
+    transition: transform 0.08s ease;
+    transform-origin: center;
+}
+
+.webmention-avatar--placeholder {
     background: var(--code-block-bg);
     color: var(--content);
     font-weight: 600;
-    border-radius: 6px;
 }
 
-/* Content block for replies/mentions */
+/* Likes (Compact Grid) */
+.webmention-likes-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+}
+
+.webmention-like-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    transition: transform 0.08s ease, box-shadow 0.12s linear;
+}
+
+.webmention-like-link .webmention-avatar {
+    width: 36px;
+    height: 36px;
+}
+
+.webmention-like-link:hover .webmention-avatar,
+.webmention-like-link:focus-visible .webmention-avatar {
+    transform: scale(1.12);
+}
+
+.webmention-like-link:hover,
+.webmention-like-link:focus-visible {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+    outline: none;
+}
+
+.webmention-like-link:active {
+    transform: scale(0.96) translateY(0);
+    transition: transform 0.05s ease;
+}
+
+/* Mentions (Row Layout) */
+.webmention-row {
+    display: flex;
+    gap: 12px;
+}
+
+.webmention-icon-column {
+    flex: 0 0 48px;
+}
+
+.webmention-icon-img,
+.webmention-icon-emoji {
+    width: 48px;
+    height: 48px;
+}
+
+.webmention-icon-emoji {
+    font-size: 22px;
+}
+
+.webmention-body-column {
+    flex: 1;
+}
+
+.webmention-meta-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9em;
+}
+
+.webmention-author {
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.webmention-verb,
+.webmention-date {
+    color: var(--secondary);
+    font-size: 0.85em;
+}
+
 .webmention-content {
     margin-top: 8px;
     font-size: 0.95em;
@@ -78,248 +148,35 @@
     margin: 5px 0;
 }
 
-/* ---------------------------
-   New: Likes (compact avatar list)
-   --------------------------- */
-
-.webmentions-likes {
-    margin-top: 18px;
-    margin-bottom: 18px;
-}
-
-.webmentions-heading,
-.webmentions-section-title {
-    margin: 14px 0 8px;
-    font-size: 1.05rem;
-    font-weight: 600;
-    color: var(--primary);
-}
-
-/* Make the likes list compact, wrap nicely and center items */
-.webmention-likes-list {
-    list-style: none;
+/* Utilities */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
     padding: 0;
-    margin: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    align-items: center;
-    justify-content: center;
-    /* center likes horizontally */
-}
-
-/* Each like item is just an avatar (link or span) */
-.webmention-like-item {
-    margin: 0;
-    padding: 0;
-    display: inline-flex;
-    /* ensure each item is inline-flex so centering is consistent */
-    align-items: center;
-    justify-content: center;
-}
-
-/* Link wrapper around avatar to increase hit area */
-.webmention-like-link,
-.webmention-like-link:link,
-.webmention-like-link:visited {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
+    margin: -1px;
     overflow: hidden;
-    text-decoration: none;
-    background: transparent;
-    transition:
-        transform 0.08s ease,
-        /* faster movement for snappy interaction */
-        box-shadow 0.12s linear;
-    transform-origin: center center;
-    /* ensure translate/scale centers */
+    clip: rect(0, 0, 0, 0);
+    border: 0;
 }
 
-/* Smaller avatar for like list, circular for visual clarity */
-.webmention-like-link .webmention-avatar {
-    width: 36px;
-    height: 36px;
-    border-radius: 6px;
-    transform-origin: center center;
-    /* crucial so scaling grows uniformly */
-    transition: transform 0.08s ease;
-    /* match link timing for cohesive motion */
-}
-
-/* When hovering the like link, scale the avatar from its center.
-   This prevents awkward growth from the bottom/side and makes the zoom feel centered. */
-.webmention-like-link:hover .webmention-avatar,
-.webmention-like-link:focus-visible .webmention-avatar {
-    transform: scale(1.12);
-    /* slightly faster and larger zoom for likes */
-}
-
-/* Placeholder initials in like list */
-.webmention-like-link .webmention-avatar--placeholder {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: var(--code-block-bg);
-    color: var(--content);
-    font-weight: 700;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Hover and focus states for the link wrapper (subtle lift) */
-/* Hover and focus states - keep slight lift while avatar scales centered */
-.webmention-like-link:hover,
-.webmention-like-link:focus-visible {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
-    outline: none;
-}
-
-/* Match PaperMod's .post-entry:active behavior: scale down on click, reset on release */
-.webmention-like-link:active {
-    transform: scale(0.96) translateY(0);
-    transition: transform 0.05s ease;
-}
-
-/* Focus-visible accessibility ring */
-.webmention-like-link:focus-visible {
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 20%, transparent);
-}
-
-/* ---------------------------
-   Mentions: left icon column (static) + right content column
-   --------------------------- */
-
-/* The list item contains a `.webmention-row` which uses a 2-column layout:
-   - left column `.webmention-icon-column` is a fixed 48px area for icon/photo/emoji (static, no transform)
-   - right column `.webmention-body-column` flexes and contains meta + content
-*/
-.webmention-row {
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-}
-
-/* Left icon column */
-.webmention-icon-column {
-    flex: 0 0 48px;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-}
-
-/* Static image icon (author photo) used in left column — no transform or hover scaling */
-.webmention-icon-img {
-    width: 48px;
-    height: 48px;
-    border-radius: 6px;
-    object-fit: cover;
-    display: block;
-    transition: none !important;
-    transform: none !important;
-    will-change: auto;
-}
-
-/* Emoji fallback icon container (48x48) — static as well */
-.webmention-icon-emoji {
-    width: 48px;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-}
-
-/* Right side: meta and content */
-.webmention-body-column {
-    flex: 1 1 0;
-}
-
-/* Top meta row inside the right column */
-.webmention-meta-top {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 8px;
-}
-
-/* Author styling in meta top */
-.webmention-meta-top .webmention-author {
-    font-weight: 600;
-    color: var(--primary);
-}
-
-/* Ensure the content block sits below the meta row with good spacing */
-.webmention-body-column .webmention-content {
-    margin-top: 8px;
-}
-
-/* Ensure the mention list items use the row layout and spacing */
-.webmention-item {
-    padding: 10px 0;
-    border-bottom: 1px solid var(--border);
-}
-
-/* On small screens, keep layout readable: icon column remains fixed and the body stacks as needed */
+/* Responsive */
 @media (max-width: 480px) {
     .webmention-row {
         gap: 8px;
-        align-items: flex-start;
     }
 
-    .webmention-icon-column {
-        flex: 0 0 44px;
-    }
-
+    .webmention-icon-column,
     .webmention-icon-img,
     .webmention-icon-emoji {
         width: 44px;
         height: 44px;
+    }
+
+    .webmention-icon-emoji {
         font-size: 20px;
     }
-}
 
-/* Visually hidden text for screen readers */
-.sr-only,
-.visually-hidden {
-    position: absolute !important;
-    height: 1px;
-    width: 1px;
-    overflow: hidden;
-    clip: rect(1px, 1px, 1px, 1px);
-    white-space: nowrap;
-    border: 0;
-    padding: 0;
-    margin: -1px;
-}
-
-/* ---------------------------
-   Misc helpers and responsiveness
-   --------------------------- */
-
-.webmention-verb,
-.webmention-date,
-.webmention-source-link {
-    color: var(--secondary);
-    font-size: 0.85em;
-}
-
-/* Make sure links in meta don't overflow */
-.webmention-meta a {
-    max-width: 60%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    display: inline-block;
-}
-
-/* Tidy up spacing on small screens */
-@media (max-width: 480px) {
     .webmention-avatar {
         width: 28px;
         height: 28px;
@@ -331,18 +188,7 @@
         height: 34px;
     }
 
-    .webmentions-heading,
-    .webmentions-section-title {
+    .webmentions-heading {
         font-size: 1rem;
-    }
-
-    .webmention-meta {
-        gap: 6px;
-        font-size: 0.88em;
-    }
-
-    /* Keep likes centered on small screens as well */
-    .webmention-likes-list {
-        justify-content: center;
     }
 }
