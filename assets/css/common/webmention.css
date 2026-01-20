@@ -104,14 +104,16 @@
     flex-wrap: wrap;
     gap: 8px;
     align-items: center;
-    justify-content: center; /* center likes horizontally */
+    justify-content: center;
+    /* center likes horizontally */
 }
 
 /* Each like item is just an avatar (link or span) */
 .webmention-like-item {
     margin: 0;
     padding: 0;
-    display: inline-flex; /* ensure each item is inline-flex so centering is consistent */
+    display: inline-flex;
+    /* ensure each item is inline-flex so centering is consistent */
     align-items: center;
     justify-content: center;
 }
@@ -131,8 +133,10 @@
     background: transparent;
     transition:
         transform 0.08s ease,
-        /* faster movement for snappy interaction */ box-shadow 0.12s linear;
-    transform-origin: center center; /* ensure translate/scale centers */
+        /* faster movement for snappy interaction */
+        box-shadow 0.12s linear;
+    transform-origin: center center;
+    /* ensure translate/scale centers */
 }
 
 /* Smaller avatar for like list, circular for visual clarity */
@@ -140,16 +144,18 @@
     width: 36px;
     height: 36px;
     border-radius: 6px;
-    transform-origin: center center; /* crucial so scaling grows uniformly */
-    transition: transform 0.08s ease; /* match link timing for cohesive motion */
+    transform-origin: center center;
+    /* crucial so scaling grows uniformly */
+    transition: transform 0.08s ease;
+    /* match link timing for cohesive motion */
 }
 
 /* When hovering the like link, scale the avatar from its center.
    This prevents awkward growth from the bottom/side and makes the zoom feel centered. */
 .webmention-like-link:hover .webmention-avatar,
-.webmention-like-link:focus .webmention-avatar,
 .webmention-like-link:focus-visible .webmention-avatar {
-    transform: scale(1.12); /* slightly faster and larger zoom for likes */
+    transform: scale(1.12);
+    /* slightly faster and larger zoom for likes */
 }
 
 /* Placeholder initials in like list */
@@ -168,10 +174,16 @@
 /* Hover and focus states for the link wrapper (subtle lift) */
 /* Hover and focus states - keep slight lift while avatar scales centered */
 .webmention-like-link:hover,
-.webmention-like-link:focus {
+.webmention-like-link:focus-visible {
     transform: translateY(-2px);
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
     outline: none;
+}
+
+/* Match PaperMod's .post-entry:active behavior: scale down on click, reset on release */
+.webmention-like-link:active {
+    transform: scale(0.96) translateY(0);
+    transition: transform 0.05s ease;
 }
 
 /* Focus-visible accessibility ring */
@@ -259,9 +271,11 @@
         gap: 8px;
         align-items: flex-start;
     }
+
     .webmention-icon-column {
         flex: 0 0 44px;
     }
+
     .webmention-icon-img,
     .webmention-icon-emoji {
         width: 44px;
