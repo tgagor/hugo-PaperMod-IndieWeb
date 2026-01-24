@@ -123,7 +123,9 @@
 
 {{- /* RSS */}}
 {{ range .AlternativeOutputFormats -}}
+{{- if or (eq .Name "rss") (eq .Name "llms") -}}
 <link rel="{{ .Rel }}" type="{{ .MediaType.Type | html }}" href="{{ .Permalink | safeURL }}" title="{{ .Name }}">
+{{ end -}}
 {{ end -}}
 {{- range .AllTranslations -}}
 <link rel="alternate" hreflang="{{ .Lang }}" href="{{ .Permalink }}">
