@@ -24,7 +24,7 @@
     {{- if site.Params.Syndication -}}
       {{- $typeConfig = index site.Params.Syndication.types .Type -}}
     {{- end -}}
-    <div class="p-summary" style="display:none">
+    <div class="p-summary e-bridgy-mastodon-content e-bridgy-bluesky-content" style="display:none">
       {{- $message := "" -}}
       {{- if $typeConfig -}}
         {{- $message = $typeConfig.message -}}
