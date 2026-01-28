@@ -109,7 +109,7 @@
           avatarHtml = `<span class="webmention-avatar webmention-avatar--placeholder" aria-hidden="true">${initial}</span>`;
         }
 
-        const interactionUrl = m.url || authorUrl;
+        const interactionUrl = m.rels?.canonical?.[0] || m.url || authorUrl;
 
         const profileLinkStart = interactionUrl
           ? `<a href="${escapeHtml(interactionUrl)}" class="webmention-like-link" target="_blank" rel="nofollow noopener" title="${authorName}">`
@@ -152,7 +152,7 @@
         if (wmType === "repost-of") verb = "reposted";
         if (wmType === "in-reply-to") verb = "replied";
 
-        const interactionUrl = m.url || authorUrl;
+        const interactionUrl = m.rels?.canonical?.[0] || m.url || authorUrl;
 
         // Choose an icon for the left column:
         // prefer author photo (48x48), otherwise a small emoji representing type
