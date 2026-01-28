@@ -47,6 +47,22 @@
     }
   };
 
+  // Helper: resolve the canonical/interaction URL from a webmention object
+  const getInteractionUrl = (m) => {
+    // Prefer canonical URL (from rels)
+    if (m.rels?.canonical) {
+      const canonical = m.rels.canonical;
+      // canonical could be an array or a string; normalize to string
+      const url = Array.isArray(canonical) ? canonical[0] : canonical;
+      if (url) return url;
+    }
+    // Fallback to m.url
+    if (m.url) return m.url;
+    // Last resort: author URL
+    if (m.author?.url) return m.author.url;
+    return "";
+  };
+
   const renderMentions = (mentions) => {
     if (!mentions || mentions.length === 0) {
       container.innerHTML = "<p></p>";
@@ -109,7 +125,7 @@
           avatarHtml = `<span class="webmention-avatar webmention-avatar--placeholder" aria-hidden="true">${initial}</span>`;
         }
 
-        const interactionUrl = m.rels?.canonical?.[0] || m.url || authorUrl;
+        const interactionUrl = getInteractionUrl(m);
 
         const profileLinkStart = interactionUrl
           ? `<a href="${escapeHtml(interactionUrl)}" class="webmention-like-link" target="_blank" rel="nofollow noopener" title="${authorName}">`
@@ -152,7 +168,7 @@
         if (wmType === "repost-of") verb = "reposted";
         if (wmType === "in-reply-to") verb = "replied";
 
-        const interactionUrl = m.rels?.canonical?.[0] || m.url || authorUrl;
+        const interactionUrl = getInteractionUrl(m);
 
         // Choose an icon for the left column:
         // prefer author photo (48x48), otherwise a small emoji representing type
