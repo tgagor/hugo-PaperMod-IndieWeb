@@ -1,4 +1,4 @@
-{{- if site.Params.ShowWebmentions }}
+{{- if (and site.Params.ShowWebmentions (ne .Params.disableWebmentions true)) }}
 {{- $targets := slice .Permalink }}
 {{- range .Aliases }}
 {{- $targets = $targets | append (. | absURL) }}
