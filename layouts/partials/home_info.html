@@ -3,8 +3,9 @@
     <header class="entry-header">
         <h1>{{ .Title | markdownify }}</h1>
     </header>
-    <div class="entry-content p-note">
-        {{ .Content | markdownify }}
+    <div class="entry-content md-content p-note">
+        {{ $opts := dict "display" "block" }}
+        {{ .Content | $.Page.RenderString $opts }}
     </div>
     <a class="u-url u-uid p-name" href="{{ "" | absLangURL }}" hidden>{{ site.Params.author }}</a>
     {{- $author := site.GetPage (printf "/authors/%s" (site.Params.author | urlize)) }}
