@@ -25,6 +25,16 @@
     .filter(Boolean);
   if (!targets.length) return;
 
+  // Extract local domain from first target for internal mention detection
+  const getDomain = (url) => {
+    try {
+      return new URL(url).hostname;
+    } catch {
+      return "";
+    }
+  };
+  const localDomain = getDomain(targets[0]);
+
   const endpoint = "https://webmention.io/api/mentions.jf2";
   const params = new URLSearchParams({
     "sort-by": "published",
@@ -63,7 +73,19 @@
     return "";
   };
 
+  // Helper: check if mention originates from the same domain (internal)
+  const isInternalMention = (mention) => {
+    if (!localDomain) return false;
+    const mentionUrl = getInteractionUrl(mention);
+    if (!mentionUrl) return false;
+    const mentionDomain = getDomain(mentionUrl);
+    return mentionDomain === localDomain;
+  };
+
   const renderMentions = (mentions) => {
+    // Filter out internal mentions (same domain as this page)
+    mentions = mentions.filter((m) => !isInternalMention(m));
+
     if (!mentions || mentions.length === 0) {
       container.innerHTML = "<p></p>";
       return;

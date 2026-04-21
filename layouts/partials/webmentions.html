@@ -7,7 +7,8 @@
 {{- $targets = $targets | append (trim . " " | absURL) }}
 {{- end }}
 {{- $targets = $targets | uniq }}
-<div id="webmentions-container" data-targets="{{ delimit $targets " ," }}"></div>
+<div id="webmentions-container" data-targets="https://gagor.pro/2025/09/crosspost-your-blog-articles-to-social-media/"></div>
+{{/* <div id="webmentions-container" data-targets="{{ delimit $targets " ," }}"></div> */}}
 {{- $webmentionJs := resources.Get "js/webmention-renderer.js" | resources.Minify | resources.Fingerprint }}
 <script src="{{ $webmentionJs.RelPermalink }}" defer></script>
 {{- end }}
