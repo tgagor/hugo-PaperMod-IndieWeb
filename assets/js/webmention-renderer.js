@@ -274,23 +274,12 @@
       elements.forEach((el) => el.remove());
     });
 
-    // Remove comments and unsafe attributes, but keep text nodes intact.
-    const commentWalker = document.createTreeWalker(
-      tempDiv,
-      NodeFilter.SHOW_COMMENT,
-      null,
-      false,
-    );
-    let commentNode;
-    while ((commentNode = commentWalker.nextNode())) {
-      commentNode.parentNode?.removeChild(commentNode);
-    }
-
+    // Remove inline event handlers and style attributes
     const allElements = tempDiv.querySelectorAll("*");
     allElements.forEach((el) => {
       const attrs = el.attributes;
       for (let i = attrs.length - 1; i >= 0; i--) {
-        const name = attrs[i].name.toLowerCase();
+        const name = attrs[i].name;
         if (name.startsWith("on") || name === "style") {
           el.removeAttribute(name);
         }
