@@ -49,8 +49,7 @@
       {{- end -}}
 
       {{- if $hashtags }}
-      {{ "\n\n" }}
-      {{ delimit $hashtags " " }}
+      {{ "&#10;" | safeHTML }}{{ delimit $hashtags " " }}
       {{ end -}}
     </div>
     {{- if not (.Param "hideMeta") }}
