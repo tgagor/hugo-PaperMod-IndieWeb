@@ -9,6 +9,7 @@
                 {{- if $img }}
                     {{- $processableFormats := (slice "jpg" "jpeg" "png" "tif" "bmp" "gif") -}}
                     {{- if hugo.IsExtended -}}
+                        {{- $processableFormats = $processableFormats | append "avif" -}}
                         {{- $processableFormats = $processableFormats | append "webp" -}}
                     {{- end -}}
                     {{- $prod := (hugo.IsProduction | or (eq site.Params.env "production")) }}
